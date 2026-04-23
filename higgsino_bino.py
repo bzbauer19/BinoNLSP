@@ -1,8 +1,18 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as cplt
 sys.path.insert(1, '/home/bzbauer/Documents/UArizona/HEP/Scripts/susypy')
 import susypy as ss
+
+# Plotting palette definition
+
+color_palette = ["#648FFF", "#785EF0", "#DC267F",
+                "#FE6100", "#FFB000"]
+                
+cmap_linear = cplt.LinearSegmentedColormap.from_list(
+    name="colorblind-ibm", colors=color_palette
+)
 
 # Defining directories and file paths
 
@@ -49,8 +59,8 @@ fig.savefig(plot_dir + "/electroweakinos_vs_bino_mass.png", dpi=300, bbox_inches
 # Compute the production cross sections for electroweakinos at LHC for bino NLSP
 
 m1s = []
-sigmas = [[],[],[]]
-unctys = [[],[],[]]
+sigmas = [[],[],[],[]]
+unctys = [[],[],[],[]]
 
 for mass in mass_scan:
     m = np.abs(ss.gather_data([mass], "EXTPAR", "1"))
@@ -62,20 +72,23 @@ for mass in mass_scan:
     # Need help understanding the total cross section that we are looking for
 
     m1s.append(m)
-    sigmas[0].append(sigma_n3n4 + sigma_n3c2)
-    sigmas[1].append(sigma_c2c2 + sigma_n3c2 + sigma_n4c2)
-    sigmas[2].append(sigma_n3n4 + sigma_n4c2)
+    sigmas[0].append(sigma_n3n4)
+    sigmas[1].append(sigma_c2c2)
+    sigmas[2].append(sigma_n3c2)
+    sigmas[3].append(sigma_n4c2)
 
-    unctys[0].append(uncty_n3n4 + uncty_n3c2)
-    unctys[1].append(uncty_c2c2 + uncty_n3c2 + uncty_n4c2)
-    unctys[2].append(uncty_n3n4 + uncty_n4c2)
+    unctys[0].append(uncty_n3n4)
+    unctys[1].append(uncty_c2c2)
+    unctys[2].append(uncty_n3c2)
+    unctys[3].append(uncty_n4c2)
 
 
-labels = ["N3", "C2", "N4"]
+labels = ["N3+N4", "C2+ + C2-", "N3 + C2", "N4 + C2"]
 
 # Plot the total cross section for each  higgsino-like electroweakino 
 
 fig, ax = plt.subplots()
+ax.set_prop_cycle('color', color_palette)
 for sigma, uncty, label in zip(sigmas, unctys, labels):
     ax.errorbar(m1s, sigma, yerr=uncty, label=label)
 
