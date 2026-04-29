@@ -13,7 +13,7 @@ BLOCK SMINPUTS
          6     1.73430715E+02   # Mt
          7     1.77700000E+00   # Mtau
 BLOCK MINPAR
-         3     3.64482636E+01   # TB
+3 3.14285714E+01 # TB
 BLOCK EXTPAR
          0    -1.00000000E+00   # Q
          1     3.00000000E+02   # M1
